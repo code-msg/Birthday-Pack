@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code-msg Birthday Surprise</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#050816;
+overflow:hidden;
+color:white;
+}
+
+/* PARTICLES */
+
+#particles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+overflow:hidden;
+pointer-events:none;
+z-index:0;
+}
+
+.particle{
+position:absolute;
+width:4px;
+height:4px;
+background:rgba(255,255,255,0.25);
+border-radius:50%;
+animation:float 14s linear infinite;
+}
+
+@keyframes float{
+from{
+transform:translateY(100vh);
+opacity:0;
+}
+to{
+transform:translateY(-120vh);
+opacity:1;
+}
+}
+
+/* COMMON */
+
+.screen{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100vh;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+padding:20px;
+text-align:center;
+overflow:hidden;
+}
+
+.active{
+display:flex;
+animation:fade 0.8s ease;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:scale(1.05);
+}
+to{
+opacity:1;
+transform:scale(1);
+}
+}
+
+button{
+padding:14px 28px;
+border:none;
+border-radius:50px;
+background:white;
+color:#ff2d75;
+font-size:1rem;
+font-weight:700;
+cursor:pointer;
+margin-top:25px;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+}
+
+/* EDITOR */
+
+#editor{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+}
+
+.editorBox{
+width:100%;
+max-width:500px;
+padding:35px;
+border-radius:30px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(14px);
+box-shadow:0 0 40px rgba(255,255,255,0.08);
+z-index:2;
+}
+
+.editorBox h1{
+font-size:2.2rem;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:16px;
+border:none;
+outline:none;
+border-radius:15px;
+margin-top:20px;
+font-size:1rem;
+}
+
+.linkBox{
+margin-top:20px;
+display:none;
+word-break:break-all;
+}
+
+/* SCENE 1 */
+
+#scene1{
+background:#050816;
+}
+
+.giftBox{
+font-size:150px;
+cursor:pointer;
+animation:giftFloat 2s ease-in-out infinite;
+z-index:2;
+}
+
+@keyframes giftFloat{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-12px);
+}
+}
+
+.typing{
+font-size:2rem;
+margin-top:20px;
+min-height:50px;
+}
+
+/* CONFETTI */
+
+.confetti{
+position:absolute;
+font-size:26px;
+animation:confettiFall 3s linear forwards;
+pointer-events:none;
+z-index:9999;
+}
+
+@keyframes confettiFall{
+from{
+transform:translateY(-100px) rotate(0deg);
+opacity:1;
+}
+to{
+transform:translateY(100vh) rotate(720deg);
+opacity:0;
+}
+}
+
+/* LETTER */
+
+#scene2{
+background:linear-gradient(135deg,#1b140f,#2b2117);
+}
+
+.paper{
+width:100%;
+max-width:760px;
+background:#f5e7c5;
+color:#3b2b1b;
+padding:35px;
+border-radius:20px;
+box-shadow:0 0 40px rgba(0,0,0,0.5);
+}
+
+.letter{
+font-size:1rem;
+line-height:2;
+text-align:left;
+white-space:pre-wrap;
+min-height:320px;
+}
+
+/* BIRTHDAY */
+
+#scene3{
+background:linear-gradient(135deg,#7c3aed,#ec4899);
+}
+
+.bigWish{
+font-size:4rem;
+font-weight:700;
+text-shadow:0 0 20px rgba(255,255,255,0.5);
+animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+from{
+transform:scale(1);
+}
+to{
+transform:scale(1.03);
+}
+}
+
+/* GAME */
+
+#scene4{
+background:linear-gradient(135deg,#0f172a,#1d4ed8);
+}
+
+#score{
+position:absolute;
+top:25px;
+font-size:1.6rem;
+font-weight:700;
+}
+
+.star{
+position:absolute;
+font-size:80px;
+cursor:pointer;
+animation:starMove 10s linear forwards;
+z-index:999;
+user-select:none;
+padding:25px;
+}
+
+@keyframes starMove{
+from{
+transform:translateY(110vh);
+}
+to{
+transform:translateY(-120vh);
+}
+}
+
+/* FINAL SCENE */
+
+#scene5{
+background:linear-gradient(135deg,#111827,#1f2937);
+}
+
+.room{
+width:100%;
+max-width:850px;
+height:520px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(10px);
+border-radius:30px;
+position:relative;
+overflow:hidden;
+box-shadow:0 0 40px rgba(255,255,255,0.08);
+}
+
+.lights{
+position:absolute;
+top:15px;
+width:100%;
+font-size:30px;
+}
+
+.table{
+position:absolute;
+bottom:70px;
+left:50%;
+transform:translateX(-50%);
+width:320px;
+height:25px;
+background:#6b4226;
+border-radius:20px;
+}
+
+.cakeWrap{
+position:absolute;
+bottom:95px;
+left:50%;
+transform:translateX(-50%);
+}
+
+.cakeContainer{
+position:relative;
+width:220px;
+height:160px;
+cursor:pointer;
+}
+
+.cake{
+position:absolute;
+bottom:0;
+width:110px;
+height:140px;
+background:linear-gradient(
+to bottom,
+#ff9ec4 0%,
+#ff9ec4 30%,
+#fff2cc 30%,
+#fff2cc 60%,
+#ff9ec4 60%,
+#ff9ec4 100%
+);
+border-radius:20px 20px 10px 10px;
+transition:1.5s;
+box-shadow:0 10px 20px rgba(0,0,0,0.3);
+}
+
+.cake::before{
+content:'';
+position:absolute;
+top:-18px;
+left:0;
+width:100%;
+height:25px;
+background:#ff5fa2;
+border-radius:50%;
+}
+
+.leftPart{
+left:0;
+}
+
+.rightPart{
+right:0;
+}
+
+.split .leftPart{
+transform:translateX(-45px) rotate(-8deg);
+}
+
+.split .rightPart{
+transform:translateX(45px) rotate(8deg);
+}
+
+#knife{
+position:absolute;
+top:40px;
+right:-120px;
+font-size:75px;
+display:none;
+z-index:10;
+}
+
+.knifeMove{
+animation:knifeCut 1.8s forwards;
+}
+
+@keyframes knifeCut{
+0%{
+right:-120px;
+}
+100%{
+right:70px;
+}
+}
+
+.note{
+position:absolute;
+top:45%;
+left:50%;
+transform:translate(-50%,-50%) scale(0);
+background:white;
+color:#111;
+padding:18px 30px;
+border-radius:15px;
+font-weight:600;
+box-shadow:0 0 30px rgba(255,255,255,0.5);
+transition:1s;
+z-index:20;
+}
+
+.note.show{
+transform:translate(-50%,-50%) scale(1);
+}
+
+#finalText{
+min-height:30px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+.bigWish{
+font-size:2.6rem;
+}
+
+.typing{
+font-size:1.5rem;
+}
+
+.paper{
+padding:22px;
+}
+
+.letter{
+font-size:0.92rem;
+line-height:1.8;
+}
+
+.star{
+font-size:70px;
+}
+
+.room{
+height:480px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="particles"></div>
+
+<!-- EDITOR -->
+
+<div class="screen active" id="editor">
+
+<div class="editorBox">
+
+<h1>Create Birthday Surprise ✨</h1>
+
+<input type="text" id="nameInput" placeholder="Who is this surprise for? 🎁">
+
+<button onclick="generateLink()">
+Generate Surprise Link ❤️
+</button>
+
+<div class="linkBox" id="linkBox">
+
+<p id="generatedLink"></p>
+
+<button onclick="copyLink()">
+Copy Link
+</button>
+
+<button onclick="openLink()">
+Open Website
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SCENE 1 -->
+
+<div class="screen" id="scene1">
+
+<div class="giftBox" onclick="openGift()">
+🎁
+</div>
+
+<div class="typing" id="giftText"></div>
+
+</div>
+
+<!-- SCENE 2 -->
+
+<div class="screen" id="scene2">
+
+<div class="paper">
+
+<div class="letter" id="letterText"></div>
+
+<button onclick="openBirthdayScene()">
+OPEN ❤️
+</button>
+
+</div>
+
+</div>
+
+<!-- SCENE 3 -->
+
+<div class="screen" id="scene3">
+
+<div class="bigWish">
+Happy Birthday <br>
+<span id="personName"></span> 🎉
+</div>
+
+<button onclick="startGame()">
+Continue ✨
+</button>
+
+</div>
+
+<!-- SCENE 4 -->
+
+<div class="screen" id="scene4">
+
+<div id="score">
+⭐ 0/5
+</div>
+
+<h1>Catch 5 Stars ⭐</h1>
+
+</div>
+
+<!-- SCENE 5 -->
+
+<div class="screen" id="scene5">
+
+<div class="room">
+
+<div class="lights">
+✨ 🎈 ✨ 🎈 ✨ 🎈 ✨
+</div>
+
+<h1 style="margin-top:70px;">
+Tap The Cake 🎂
+</h1>
+
+<div class="table"></div>
+
+<div class="cakeWrap">
+
+<div class="cakeContainer" onclick="cutCake()">
+
+<div id="knife">
+🔪
+</div>
+
+<div class="cake leftPart"></div>
+
+<div class="cake rightPart"></div>
+
+</div>
+
+</div>
+
+<div class="note" id="note">
+
+<div id="finalText"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* PARTICLES */
+
+for(let i=0;i<50;i++){
+
+const particle=document.createElement('div');
+
+particle.classList.add('particle');
+
+particle.style.left=Math.random()*100+'vw';
+
+particle.style.animationDuration=
+(10+Math.random()*10)+'s';
+
+particle.style.opacity=Math.random();
+
+document.getElementById('particles')
+.appendChild(particle);
+
+}
+
+/* LINK */
+
+let finalURL='';
+
+function generateLink(){
+
+const name=
+document.getElementById('nameInput')
+.value.trim();
+
+if(!name){
+
+alert('Please enter a name ❤️');
+return;
+
+}
+
+const params=new URLSearchParams();
+
+params.set('name',name);
+
+finalURL=
+window.location.origin+
+window.location.pathname+
+'?' + params.toString();
+
+document.getElementById('generatedLink')
+.innerText=finalURL;
+
+document.getElementById('linkBox')
+.style.display='block';
+
+}
+
+function copyLink(){
+
+navigator.clipboard.writeText(finalURL);
+
+alert('Link Copied ❤️');
+
+}
+
+function openLink(){
+
+window.open(finalURL,'_blank');
+
+}
+
+/* URL */
+
+const urlParams=
+new URLSearchParams(window.location.search);
+
+const person=urlParams.get('name');
+
+if(person){
+
+switchScene('scene1');
+
+document.getElementById('personName')
+.innerText=person;
+
+typeText(
+'giftText',
+'Open your Gift',
+70
+);
+
+}
+
+/* TYPE EFFECT */
+
+function typeText(id,text,speed,callback){
+
+const el=document.getElementById(id);
+
+el.innerHTML='';
+
+let i=0;
+
+const interval=setInterval(()=>{
+
+el.innerHTML+=text.charAt(i);
+
+i++;
+
+if(i>=text.length){
+
+clearInterval(interval);
+
+if(callback) callback();
+
+}
+
+},speed);
+
+}
+
+/* SCENE SWITCH */
+
+function switchScene(id){
+
+document.querySelectorAll('.screen')
+.forEach(screen=>{
+
+screen.classList.remove('active');
+
+});
+
+document.getElementById(id)
+.classList.add('active');
+
+}
+
+/* CONFETTI */
+
+function blastConfetti(){
+
+for(let i=0;i<45;i++){
+
+const confetti=
+document.createElement('div');
+
+confetti.classList.add('confetti');
+
+confetti.innerHTML=
+['🎉','✨','🎊','💖']
+[Math.floor(Math.random()*4)];
+
+confetti.style.left=
+Math.random()*100+'vw';
+
+document.body.appendChild(confetti);
+
+setTimeout(()=>{
+confetti.remove();
+},3000);
+
+}
+
+}
+
+/* SCENE 1 */
+
+function openGift(){
+
+blastConfetti();
+
+setTimeout(()=>{
+
+switchScene('scene2');
+
+startLetter();
+
+},1000);
+
+}
+
+/* LETTER */
+
+function startLetter(){
+
+const message=
+`Happy Birthday to the most special person. 🎂✨
+
+I hope this year gives you everything your heart secretly wishes for — peace in difficult moments, courage when things feel uncertain, and endless reasons to smile every single day. You deserve love that feels safe, dreams that come true, and memories that stay forever.
+
+No matter how much time passes, always remember this:
+You are important.
+You are appreciated.
+And you make this world brighter just by existing.
+
+So today, laugh louder, smile bigger, and enjoy every little moment because this day belongs to you. 💖
+
+Happy Birthday once again 🎉🎈`;
+
+typeText(
+'letterText',
+message,
+18
+);
+
+}
+
+/* OPEN BDAY */
+
+function openBirthdayScene(){
+
+blastConfetti();
+
+setTimeout(()=>{
+
+switchScene('scene3');
+
+blastConfetti();
+
+},900);
+
+}
+
+/* GAME */
+
+let score=0;
+let gameInterval;
+
+function startGame(){
+
+switchScene('scene4');
+
+spawnStars();
+
+gameInterval=
+setInterval(spawnStars,1400);
+
+}
+
+function spawnStars(){
+
+if(score>=5) return;
+
+const star=document.createElement('div');
+
+star.classList.add('star');
+
+star.innerHTML='⭐';
+
+star.style.left=
+Math.random()*85+'vw';
+
+star.style.top='100vh';
+
+star.onclick=()=>{
+
+score++;
+
+document.getElementById('score')
+.innerHTML=`⭐ ${score}/5`;
+
+star.remove();
+
+blastConfetti();
+
+if(score>=5){
+
+clearInterval(gameInterval);
+
+setTimeout(()=>{
+
+switchScene('scene5');
+
+},1200);
+
+}
+
+};
+
+document.body.appendChild(star);
+
+setTimeout(()=>{
+star.remove();
+},10000);
+
+}
+
+/* FINAL CAKE */
+
+let cakeCut=false;
+
+function cutCake(){
+
+if(cakeCut) return;
+
+cakeCut=true;
+
+const knife=
+document.getElementById('knife');
+
+knife.style.display='block';
+
+knife.classList.add('knifeMove');
+
+setTimeout(()=>{
+
+document.querySelector('.cakeContainer')
+.classList.add('split');
+
+},1500);
+
+setTimeout(()=>{
+
+document.getElementById('note')
+.classList.add('show');
+
+typeText(
+'finalText',
+'You are very special for me ❤️',
+70
+);
+
+blastConfetti();
+
+},2600);
+
+}
+
+</script>
+
+</body>
+</html>
